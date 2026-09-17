@@ -2557,10 +2557,10 @@ install_udp_custom() {
     arch=$(uname -m)
     local binary_url=""
     if [[ "$arch" == "x86_64" ]]; then
-        binary_url="https://github.com/taifunss/moj-manager/raw/main/udp/udp-custom-linux-amd64"
+        binary_url="https://github.com/taifunss/nowy-manager/raw/main/udp/udp-custom-linux-amd64"
         echo -e "${C_BLUE}ℹ️ Detected x86_64 (amd64) architecture.${C_RESET}"
     elif [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
-        binary_url="https://github.com/taifunss/moj-manager/raw/main/udp/udp-custom-linux-arm"
+        binary_url="https://github.com/taifunss/nowy-manager/raw/main/udp/udp-custom-linux-arm"
         echo -e "${C_BLUE}ℹ️ Detected ARM64 architecture.${C_RESET}"
     else
         echo -e "\n${C_RED}❌ Unsupported architecture: $arch. Cannot install udp-custom.${C_RESET}"
@@ -3659,7 +3659,7 @@ install_falcon_proxy() {
 
     echo -e "\n${C_BLUE}🌐 Fetching available versions from GitHub...${C_RESET}"
     local releases_json
-    releases_json=$(curl -s "https://api.github.com/repos/taifunss/moj-manager/releases")
+    releases_json=$(curl -s "https://api.github.com/repos/taifunss/nowy-manager/releases")
     if [[ -z "$releases_json" || "$releases_json" == "[]" ]]; then
         echo -e "${C_RED}❌ Could not fetch releases. Check internet connection.${C_RESET}"
         return
@@ -3714,7 +3714,7 @@ install_falcon_proxy() {
         echo -e "${C_RED}❌ Unsupported architecture: $arch${C_RESET}"; return
     fi
 
-    local download_url="https://github.com/taifunss/moj-manager/releases/download/$SELECTED_VERSION/$binary_name"
+    local download_url="https://github.com/taifunss/nowy-manager/releases/download/$SELECTED_VERSION/$binary_name"
     echo -e "\n${C_BLUE}📥 Downloading Falcon Proxy $SELECTED_VERSION...${C_RESET}"
     wget -q --show-progress -O "$FALCONPROXY_BINARY" "$download_url"
     if [ $? -ne 0 ]; then
@@ -7610,7 +7610,7 @@ update_script() {
     cp /usr/local/bin/menu "$backup_file" 2>/dev/null
     echo -e "${C_DIM}Backup: $backup_file${C_RESET}"
 
-    if curl -L -o /usr/local/bin/menu "https://raw.githubusercontent.com/taifunss/moj-manager/main/menu.sh" 2>&1 | tail -3; then
+    if curl -L -o /usr/local/bin/menu "https://raw.githubusercontent.com/taifunss/nowy-manager/main/menu.sh" 2>&1 | tail -3; then
         chmod +x /usr/local/bin/menu
         if bash -n /usr/local/bin/menu 2>/dev/null; then
             echo -e "\n${C_GREEN}✅ Update zakończony pomyślnie!${C_RESET}"
