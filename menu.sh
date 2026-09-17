@@ -3034,8 +3034,10 @@ write_internal_nginx_config() {
     mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
     cat > "$NGINX_CONFIG_FILE" <<EOF
 server {
-    listen 127.0.0.1:${NGINX_INTERNAL_HTTP_PORT} default_server;
-    listen 127.0.0.1:${NGINX_INTERNAL_TLS_PORT} ssl http2 default_server;
+    listen 127.0.0.1:${NGINX_INTERNAL_HTTP_PORT} proxy_protocol default_server;
+    set_real_ip_from 127.0.0.1;
+    real_ip_header proxy_protocol;
+    listen 127.0.0.1:${NGINX_INTERNAL_TLS_PORT} ssl proxy_protocol default_server;
     server_tokens off;
     server_name ${server_name};
 
@@ -3172,11 +3174,11 @@ backend direct_ssh
 
 backend nginx_cleartext
     mode tcp
-    server nginx_8880 127.0.0.1:${NGINX_INTERNAL_HTTP_PORT}
+    server nginx_8880 127.0.0.1:${NGINX_INTERNAL_HTTP_PORT} send-proxy
 
 backend nginx_tls
     mode tcp
-    server nginx_8443 127.0.0.1:${NGINX_INTERNAL_TLS_PORT}
+    server nginx_8443 127.0.0.1:${NGINX_INTERNAL_TLS_PORT} send-proxy
 
 backend loopback_ssl_terminator
     mode tcp
@@ -3745,7 +3747,7 @@ After=network.target
 [Service]
 User=root
 Type=simple
-ExecStart=$FALCONPROXY_BINARY -p $ports
+ExecStart=$FALCONPROXY_BINARY -p $ports -log /var/log/falconproxy.log
 Restart=always
 RestartSec=2s
 
