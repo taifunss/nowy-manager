@@ -3154,7 +3154,7 @@ frontend port_443_edge
 # TIER 2: INTERNAL DECRYPTOR (Only for Any-SNI SSH-TLS)
 # ====================================================================
 frontend internal_decryptor
-    bind 127.0.0.1:${HAPROXY_INTERNAL_DECRYPT_PORT} ssl crt ${SSL_CERT_FILE}
+    bind 127.0.0.1:${HAPROXY_INTERNAL_DECRYPT_PORT} ssl crt ${SSL_CERT_FILE} accept-proxy
     mode tcp
     tcp-request inspect-delay 2s
 
@@ -3182,7 +3182,7 @@ backend nginx_tls
 
 backend loopback_ssl_terminator
     mode tcp
-    server haproxy_ssl 127.0.0.1:${HAPROXY_INTERNAL_DECRYPT_PORT}
+    server haproxy_ssl 127.0.0.1:${HAPROXY_INTERNAL_DECRYPT_PORT} send-proxy
 EOF
 }
 
